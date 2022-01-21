@@ -33,6 +33,19 @@
         Article.innerHTML = ArticleParagraph;
         DocumentBody.appendChild(Article);
 
+
+        // Deletion example
+        //document.getElementById("ArticleParagraph").remove();
+
+        // Insert Before example
+        // let NewH1 = document.createElement("h1");
+        // NewH1.setAttribute("class", "display-1");
+        // NewH1.textContent = "Hello, World!";
+        // MainContent.before(NewH1);
+
+        
+
+
         
 
 
