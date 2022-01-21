@@ -25,7 +25,12 @@
         // Step 3 configure new element
         MainParagraph.setAttribute("id", "MainParagraph");
         MainParagraph.setAttribute("class", "mt-3");
-        MainParagraph.textContent = "This is the Main Paragraph";
+
+        let FirstParagraphString = "This is";
+        // example of Template String
+        let SecondParagraphString = `${FirstParagraphString} the Main Paragraph`;
+
+        MainParagraph.textContent = SecondParagraphString;
         Article.setAttribute("class", "container");
 
         // Step 4 add / insert new element
