@@ -50,7 +50,8 @@
 
         
 
-
+        let tom = new Contact("Tom", "555-555-5555", "tom@example.com");
+        console.log(tom.toString());
         
 
 
