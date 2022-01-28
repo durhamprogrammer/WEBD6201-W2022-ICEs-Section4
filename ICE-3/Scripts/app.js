@@ -76,12 +76,17 @@
 
         sendButton.addEventListener("click", function(event)
         {
-            event.preventDefault();
+            //event.preventDefault();
 
             if(subscribeCheckbox.checked)
             {
                 let contact = new Contact(fullName.value, contactNumber.value, emailAddress.value);
-                console.log(contact.toString());
+                if(contact.serialize())
+                {
+                    let key = contact.FullName.substring(0, 1) + Date.now();
+
+                    localStorage.setItem(key, contact.serialize());
+                }
             }
         });
     }
@@ -89,6 +94,40 @@
     function DisplayContactListPage()
     {
         console.log("Contact-List Page");
+
+        if(localStorage.length > 0) // check if localStorage has something in it 
+        {
+            let contactList = document.getElementById("contactList");
+
+            let data = "";
+
+            let keys = Object.keys(localStorage);
+
+            let index = 1;
+
+            //for every key in the keys collection loop
+            for(const key of keys)
+            {
+                let contactData = localStorage.getItem(key); // retrieve contact data from localStorage
+
+                let contact = new Contact(); // create an empty Contact Object
+                contact.deserialize(contactData);
+
+                data += `<tr>
+                <th scope="row" class="text-center">${index}</th>
+                <td>${contact.FullName}</td>
+                <td>${contact.ContactNumber}</td>
+                <td>${contact.EmailAddress}</td>
+                <td></td>
+                <td></td>
+                </tr>
+                `;
+                
+                index++;
+            }
+
+            contactList.innerHTML = data;
+        }
     }
 
     // named function
