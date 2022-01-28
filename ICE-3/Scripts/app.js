@@ -3,8 +3,26 @@
 (function()
 {
 
+    function DisplayAboutPage()
+    {
+        console.log("About Us Page");
+    }
+
+    function DisplayProductsPage()
+    {
+        console.log("Products Page");
+    }
+
+    function DisplayServicesPage()
+    {
+        console.log("Services Page");
+    }
+
+
     function DisplayHomePage()
     {
+        console.log("Home Page");
+
         let AboutUsButton = document.getElementById("AboutUsButton");
         
         AboutUsButton.addEventListener("click", function()
@@ -47,8 +65,30 @@
         // NewH1.setAttribute("class", "display-1");
         // NewH1.textContent = "Hello, World!";
         // MainContent.before(NewH1);
+    }
 
+    function DisplayContactPage()
+    {
+        console.log("Contact Us Page");
 
+        let sendButton = document.getElementById("sendButton");
+        let subscribeCheckbox = document.getElementById("subscribeCheckbox");
+
+        sendButton.addEventListener("click", function(event)
+        {
+            event.preventDefault();
+
+            if(subscribeCheckbox.checked)
+            {
+                let contact = new Contact(fullName.value, contactNumber.value, emailAddress.value);
+                console.log(contact.toString());
+            }
+        });
+    }
+
+    function DisplayContactListPage()
+    {
+        console.log("Contact-List Page");
     }
 
     // named function
@@ -56,11 +96,26 @@
     {
         console.log("App Started!!");
 
-        switch(document.title)
+        switch (document.title) 
         {
-            case "Home":
-                DisplayHomePage();
-                break;
+          case "Home":
+            DisplayHomePage();
+            break;
+          case "Contact Us":
+            DisplayContactPage();
+            break;
+          case "Contact-List":
+            DisplayContactListPage();
+            break;
+          case "About Us":
+            DisplayAboutPage();
+            break;
+          case "Our Products":
+            DisplayProductsPage();
+            break;
+          case "Our Services":
+            DisplayServicesPage();
+            break;
         }
     }
 
