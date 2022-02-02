@@ -23,48 +23,71 @@
     {
         console.log("Home Page");
 
-        let AboutUsButton = document.getElementById("AboutUsButton");
-        
-        AboutUsButton.addEventListener("click", function()
+        // old way
+        //let AboutUsButton = document.getElementById("AboutUsButton");
+        // AboutUsButton.addEventListener("click", function()
+        // {
+        //     // redirect to about page
+        //     location.href = "about.html";
+        // });
+
+        // 1) Fattest Memory footprint - we need the jquery library
+        // jQuery way - returns all elements that contain an id of AboutUsButton - attach the "click" event to each of them
+        $("#AboutUsButton").on("click", function()
         {
-            // redirect to about page
             location.href = "about.html";
         });
 
+        // 2) Second Fatest Memory footprint - we're getting stuff we don't need
+        // JavaScript way - returns all elements that contain an id of AboutUsButton - loops through all elements
+        // document.querySelectorAll("#AboutUsButton").forEach(function(element) 
+        // {
+        //     // attach an "click" event to each element in the collection
+        //     element.addEventListener("click", function()
+        //     {
+        //         location.href = "about.html";
+        //     })
+        // });
+
+        // 3) Pretty Lean
+        // document.querySelector("#AboutUsButton").addEventListener("click", function(){
+        //     location.href = "about.html";
+        // });
+
+        // 4) Leanest - Native JavaScript - only return a reference to the object required to add the "click" event to
+        // document.getElementById("AboutUsButton").addEventListener("click", function(){
+        //     location.href = "about.html";
+        // });
+
+        
+        
         // Step 1 get a reference to an entry point(s) (insertion point / deletion point)
-        let MainContent = document.getElementsByTagName("main")[0];
-        let DocumentBody = document.body;
+        //let MainContent = document.getElementsByTagName("main")[0];
+        //let DocumentBody = document.body;
         
         // Step 2 create an element(s) to insert
-        let MainParagraph = document.createElement("p");
-        let Article = document.createElement("article");
-        let ArticleParagraph = `<p id="ArticleParagraph" class="mt-3">This is the Article Paragraph</p>`;
+        //let MainParagraph = document.createElement("p");
+        //let Article = document.createElement("article");
+        //let ArticleParagraph = `<p id="ArticleParagraph" class="mt-3">This is the Article Paragraph</p>`;
 
         // Step 3 configure new element
-        MainParagraph.setAttribute("id", "MainParagraph");
-        MainParagraph.setAttribute("class", "mt-3");
+        //MainParagraph.setAttribute("id", "MainParagraph");
+        //MainParagraph.setAttribute("class", "mt-3");
 
-        let FirstParagraphString = "This is";
+        //let FirstParagraphString = "This is";
         // example of Template String
-        let SecondParagraphString = `${FirstParagraphString} the Main Paragraph`;
+        //let SecondParagraphString = `${FirstParagraphString} the Main Paragraph`;
 
-        MainParagraph.textContent = SecondParagraphString;
-        Article.setAttribute("class", "container");
+        //MainParagraph.textContent = SecondParagraphString;
+        //Article.setAttribute("class", "container");
 
         // Step 4 add / insert new element
-        MainContent.appendChild(MainParagraph);
-        Article.innerHTML = ArticleParagraph;
-        DocumentBody.appendChild(Article);
-
-
-        // Deletion example
-        //document.getElementById("ArticleParagraph").remove();
-
-        // Insert Before example
-        // let NewH1 = document.createElement("h1");
-        // NewH1.setAttribute("class", "display-1");
-        // NewH1.textContent = "Hello, World!";
-        // MainContent.before(NewH1);
+        //MainContent.appendChild(MainParagraph);
+        $("main").append(`<p id="MainParagraph" class="mt-3">This is the Main Paragraph</p>`);
+        //Article.innerHTML = ArticleParagraph;
+        $("body").append(`<article class="container">
+        <p id="ArticleParagraph" class="mt-3">This is the Article Paragraph</p>
+        </article>`);
     }
 
     function DisplayContactPage()
