@@ -1,2 +1,2 @@
 "use strict";
-let Core;
+let core;
