@@ -53,9 +53,36 @@
         }
     }
 
+    function TestFullName()
+    {
+        let messageArea = $("#messageArea").hide();
+        let fullNamePattern = /([A-Z][a-z]{1,25})+(\s|,|-)([A-Z][a-z]{1,25})+(\s|,|-)*/;
+
+        $("#fullName").on("blur", function()
+        {
+            let textContentOfFullName = $(this).val(); // text inside the fullName text box
+            if(!fullNamePattern.test(textContentOfFullName)) // RegExp failed to validate
+            {
+                $(this).trigger("focus"); // go back to the fullName text box
+                $(this).trigger("select"); // select everything in the fullName text box
+                messageArea.addClass("alert alert-danger"); // adds an alert class to the div tag
+                messageArea.text("Please enter a valid Full Name. This must include at least a Capitalized first name followed by a Capitalized last Name.");
+                messageArea.show();
+            }
+            else // everything is ok
+            {
+                messageArea.removeAttr("class"); // removes the attribute named
+                messageArea.hide();
+            }
+            
+        });
+    }
+
     function DisplayContactPage()
     {
         console.log("Contact Us Page");
+
+        TestFullName();
 
         let sendButton = document.getElementById("sendButton");
         let subscribeCheckbox = document.getElementById("subscribeCheckbox");
