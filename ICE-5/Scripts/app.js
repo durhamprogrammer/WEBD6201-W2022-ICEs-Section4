@@ -106,7 +106,7 @@
     function TestEmailAddress()
     {
         let messageArea = $("#messageArea").hide();
-        let emailAddressPattern = /([A-Z][a-z]{1,25})+(\s|,|-)([A-Z][a-z]{1,25})+(\s|,|-)*/;
+        let emailAddressPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10}$/;
 
         $("#emailAddress").on("blur", function()
         {
