@@ -53,91 +53,46 @@
         }
     }
 
-    function TestFullName()
+    /**
+     * This method validates an input text field in the form and displays
+     * an error in the message area div element
+     *
+     * @param {string} input_field_ID
+     * @param {RegExp} regular_expression
+     * @param {string} error_message
+     */
+    function ValidateField(input_field_ID, regular_expression, error_message)
     {
         let messageArea = $("#messageArea").hide();
-        let fullNamePattern = /([A-Z][a-z]{1,25})+(\s|,|-)([A-Z][a-z]{1,25})+(\s|,|-)*/;
 
-        $("#fullName").on("blur", function()
+        $("#" + input_field_ID).on("blur", function()
         {
-            let textContentOfFullName = $(this).val(); // text inside the fullName text box
-            if(!fullNamePattern.test(textContentOfFullName)) // RegExp failed to validate
+            let input_text_field = $(this).val(); 
+            if(!regular_expression.test(input_text_field)) 
             {
-                $(this).trigger("focus"); // go back to the fullName text box
-                $(this).trigger("select"); // select everything in the fullName text box
-                messageArea.addClass("alert alert-danger"); // adds an alert class to the div tag
-                messageArea.text("Please enter a valid Full Name. This must include at least a Capitalized first name followed by a Capitalized last Name.");
-                messageArea.show();
+                $(this).trigger("focus").trigger("select"); 
+                messageArea.addClass("alert alert-danger").text(error_message).show();
             }
-            else // everything is ok
+            else 
             {
-                messageArea.removeAttr("class"); // removes the attribute named
-                messageArea.hide();
-            }
-            
+                messageArea.removeAttr("class").hide();
+            } 
         });
     }
 
-    function TestContactNumber()
+    function ContactFormValidation()
     {
-        let messageArea = $("#messageArea").hide();
-        let contactNumberPattern = /^(\+\d{1,3}[\s-.])?\(?\d{3}\)?[\s-.]?\d{3}[\s-.]?\d{4}$/;
-
-        $("#contactNumber").on("blur", function()
-        {
-            let textContentOfContactNumber = $(this).val(); // text inside the fullName text box
-            if(!contactNumberPattern.test(textContentOfContactNumber)) // RegExp failed to validate
-            {
-                $(this).trigger("focus"); // go back to the fullName text box
-                $(this).trigger("select"); // select everything in the fullName text box
-                messageArea.addClass("alert alert-danger"); // adds an alert class to the div tag
-                messageArea.text("Please enter a valid Contact Number. Example: (905) 555-5555");
-                messageArea.show();
-            }
-            else // everything is ok
-            {
-                messageArea.removeAttr("class"); // removes the attribute named
-                messageArea.hide();
-            }
-            
-        });
-    }
-
-    function TestEmailAddress()
-    {
-        let messageArea = $("#messageArea").hide();
-        let emailAddressPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10}$/;
-
-        $("#emailAddress").on("blur", function()
-        {
-            let textContentOfEmailAddress = $(this).val(); // text inside the fullName text box
-            if(!emailAddressPattern.test(textContentOfEmailAddress)) // RegExp failed to validate
-            {
-                $(this).trigger("focus"); // go back to the fullName text box
-                $(this).trigger("select"); // select everything in the fullName text box
-                messageArea.addClass("alert alert-danger"); // adds an alert class to the div tag
-                messageArea.text("Please enter a valid Email Address. ");
-                messageArea.show();
-            }
-            else // everything is ok
-            {
-                messageArea.removeAttr("class"); // removes the attribute named
-                messageArea.hide();
-            }
-            
-        });
+        ValidateField("fullName",/([A-Z][a-z]{1,25})+(\s|,|-)([A-Z][a-z]{1,25})+(\s|,|-)*/,"Please enter a valid Full Name. This must include at least a Capitalized first name followed by a Capitalized last Name.");
+        ValidateField("contactNumber",/^(\+\d{1,3}[\s-.])?\(?\d{3}\)?[\s-.]?\d{3}[\s-.]?\d{4}$/,"Please enter a valid Contact Number. Example: (905) 555-5555");
+        ValidateField("emailAddress",/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10}$/,"Please enter a valid Email Address.");
     }
 
     function DisplayContactPage()
     {
         console.log("Contact Us Page");
 
-        TestFullName();
-
-        TestContactNumber();
-
-        TestEmailAddress();
-
+        ContactFormValidation();
+        
         let sendButton = document.getElementById("sendButton");
         let subscribeCheckbox = document.getElementById("subscribeCheckbox");
 
