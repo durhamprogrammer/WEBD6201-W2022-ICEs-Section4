@@ -238,13 +238,22 @@
         }
     }
 
+    function DisplayLoginPage()
+    {
+        console.logl("Login Page");
+    }
+
+    function DisplayRegisterPage()
+    {
+        console.log("Register Page");
+    }
+
     // named function
     function Start()
     {
         console.log("App Started!!");
 
-        switch (document.title) 
-        {
+        switch (document.title) {
           case "Home":
             DisplayHomePage();
             break;
@@ -263,10 +272,15 @@
           case "Our Services":
             DisplayServicesPage();
             break;
-            case "Edit":
+          case "Edit":
             DisplayEditPage();
             break;
-
+          case "Login":
+            DisplayLoginPage();
+            break;
+          case "Register":
+            DisplayRegisterPage();
+            break;
         }
     }
 
