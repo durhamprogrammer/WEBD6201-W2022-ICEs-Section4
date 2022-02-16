@@ -33,6 +33,25 @@
         $("body").append(`<article class="container">
         <p id="ArticleParagraph" class="mt-3">This is the Article Paragraph</p>
         </article>`);
+
+        // step 1 - instantiate an XHR object
+        let XHR = new XMLHttpRequest();
+
+        // step 2 - create an event listener / handler for readystatechange event
+        XHR.addEventListener("readystatechange", () =>
+        {
+            if(XHR.readyState === 4 && XHR.status === 200)
+            {
+                $("header").html(XHR.responseText); // data payload
+                $(`li>a:contains(${document.title})`).addClass("active"); // add a class of 'active'
+            }
+        });
+
+        // step 3 - open a connection to the server
+        XHR.open("GET", "header.html");
+
+        // step 4 - send the request to the server
+        XHR.send();
     }
 
     /**
