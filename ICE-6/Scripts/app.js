@@ -62,8 +62,6 @@
     {
         console.log("Home Page");
 
-        AjaxRequest("GET", "header.html", LoadHeader);
-
         $("#AboutUsButton").on("click", function()
         {
             location.href = "about.html";
@@ -293,6 +291,8 @@
     function Start()
     {
         console.log("App Started!!");
+
+        AjaxRequest("GET", "header.html", LoadHeader);
 
         switch (document.title) {
           case "Home":
