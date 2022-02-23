@@ -367,16 +367,51 @@
         console.log("Register Page");
     }
 
+    function Display404Page()
+    {
+
+    }
+
+    /**
+     * This function returns the Callback function related to active link
+     *
+     * @param {string} activeLink
+     * @returns {function}
+     */
+    function ActiveLinkCallBack(activeLink)
+    {
+        switch(activeLink)
+        {
+            case "home": return DisplayHomePage;
+            case "about": return DisplayAboutPage;
+            case "projects": return DisplayProductsPage;
+            case "services": return DisplayServicesPage;
+            case "contact": return DisplayContactPage;
+            case "contact-list": return DisplayContactListPage;
+            case "edit": return DisplayEditPage;
+            case "login": return DisplayLoginPage;
+            case "register": return DisplayRegisterPage;
+            case "404": return Display404Page;
+            default:
+                console.error("ERROR: callback does not exist: " + activeLink);
+                break;
+        }
+    }
+
     // named function
     function Start()
     {
         console.log("App Started!!");
 
+        // LoadHeader(router.ActiveLink);
+
         AjaxRequest("GET", "header.html", LoadHeader);
 
+        // LoadContent(router.ActiveLink, ActiveLinkCallBack(router.ActiveLink))
         
+        // LoadFooter()
 
-        switch (document.title) {
+        /* switch (document.title) {
           case "Home":
             DisplayHomePage();
             break;
@@ -404,7 +439,7 @@
           case "Register":
             DisplayRegisterPage();
             break;
-        }
+        } */
     }
 
     window.addEventListener("load", Start);
