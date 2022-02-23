@@ -405,41 +405,11 @@
 
         // LoadHeader(router.ActiveLink);
 
-        AjaxRequest("GET", "header.html", LoadHeader);
+        AjaxRequest("GET", "./Views/components/header.html", LoadHeader);
 
         // LoadContent(router.ActiveLink, ActiveLinkCallBack(router.ActiveLink))
         
         // LoadFooter()
-
-        /* switch (document.title) {
-          case "Home":
-            DisplayHomePage();
-            break;
-          case "Contact Us":
-            DisplayContactPage();
-            break;
-          case "Contact-List":
-            DisplayContactListPage();
-            break;
-          case "About Us":
-            DisplayAboutPage();
-            break;
-          case "Our Products":
-            DisplayProductsPage();
-            break;
-          case "Our Services":
-            DisplayServicesPage();
-            break;
-          case "Edit":
-            DisplayEditPage();
-            break;
-          case "Login":
-            DisplayLoginPage();
-            break;
-          case "Register":
-            DisplayRegisterPage();
-            break;
-        } */
     }
 
     window.addEventListener("load", Start);
