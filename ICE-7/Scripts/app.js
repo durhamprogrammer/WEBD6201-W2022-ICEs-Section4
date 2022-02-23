@@ -186,11 +186,7 @@
 
             contactList.innerHTML = data;
 
-            $("#addButton").on("click", () =>
-            {
-                location.href = "edit.html#add";
-            });
-
+            
             $("button.delete").on("click", function()
             {
                 if(confirm("Are you sure?"))
@@ -206,6 +202,12 @@
                 location.href = "edit.html#" + $(this).val();
             });
         }
+
+        $("#addButton").on("click", () =>
+            {
+                location.href = "edit.html#add";
+        });
+
     }
 
     function DisplayEditPage()
