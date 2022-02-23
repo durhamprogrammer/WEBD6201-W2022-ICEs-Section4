@@ -3,17 +3,31 @@
     class Router
     {
         // public properties
+
+        /**
+         *
+         * @returns {string}
+         */
         get ActiveLink()
         {
             return this.m_activeLink;
         }
 
+        /**
+         *
+         * @param {string} link
+         */
         set ActiveLink(link)
         {
             this.m_activeLink = link;
         }
 
         // constructor
+
+        /**
+         * Creates an instance of Router.
+         * @constructor
+         */
         constructor()
         {
             this.ActiveLink = "";
@@ -91,3 +105,28 @@
     core.Router = Router;
 
 })(core || (core = {}));
+
+let router = new core.Router();
+router.AddTable([
+    "/",
+    "/home",
+    "/about",
+    "/services",
+    "/contact",
+    "/contact-list",
+    "/projects",
+    "/login",
+    "/register",
+    "/edit"
+]);
+
+let route = location.pathname; // alias for location.pathname
+
+if(router.Find(route) > -1)
+{
+    router.ActiveLink = (route == "/") ? "home" : route.substring(1);
+}
+else
+{
+    router.ActiveLink = "404";
+}
