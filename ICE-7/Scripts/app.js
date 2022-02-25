@@ -409,7 +409,7 @@
         {
             case "home": return DisplayHomePage;
             case "about": return DisplayAboutPage;
-            case "projects": return DisplayProductsPage;
+            case "products": return DisplayProductsPage;
             case "services": return DisplayServicesPage;
             case "contact": return DisplayContactPage;
             case "contact-list": return DisplayContactListPage;
@@ -429,8 +429,6 @@
         console.log("App Started!!");
 
         LoadHeader();
-
-        // AjaxRequest("GET", "./Views/components/header.html", LoadHeader);
 
         LoadContent();
         
