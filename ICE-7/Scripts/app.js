@@ -33,13 +33,37 @@
     /**
      * This function loads the NavBar from the header file and injects it into the page
      *
-     * @param {string} data
      */
-    function LoadHeader(data)
+    function LoadHeader()
     {
-        $("header").html(data); // data payload
-        $(`li>a:contains(${document.title})`).addClass("active"); // add a class of 'active'
-        CheckLogin();
+        $.get("./Views/components/header.html", function(html_data)
+        {
+            $("header").html(html_data); // data payload
+
+            //TODO: this needs to be fixed
+            $(`li>a:contains(${document.title})`).addClass("active"); // add a class of 'active'
+            CheckLogin();
+        });
+    }
+
+    function LoadContent()
+    {
+        let page_name = router.ActiveLink; // alias 
+        let callback = ActiveLinkCallBack(); // returns a reference to the appropriate function
+        $.get(`./Views/content/${page_name}.html`, function(html_data)
+        {
+            $("main").html(html_data); // data payload
+
+            callback();
+        });
+    }
+
+    function LoadFooter()
+    {
+        $.get("./Views/components/footer.html", function(html_data)
+        {
+            $("footer").html(html_data); // data payload
+        });
     }
 
 
@@ -377,12 +401,11 @@
     /**
      * This function returns the Callback function related to active link
      *
-     * @param {string} activeLink
      * @returns {function}
      */
-    function ActiveLinkCallBack(activeLink)
+    function ActiveLinkCallBack()
     {
-        switch(activeLink)
+        switch(router.ActiveLink)
         {
             case "home": return DisplayHomePage;
             case "about": return DisplayAboutPage;
@@ -395,7 +418,7 @@
             case "register": return DisplayRegisterPage;
             case "404": return Display404Page;
             default:
-                console.error("ERROR: callback does not exist: " + activeLink);
+                console.error("ERROR: callback does not exist: " + router.ActiveLink);
                 break;
         }
     }
@@ -405,13 +428,13 @@
     {
         console.log("App Started!!");
 
-        // LoadHeader(router.ActiveLink);
+        LoadHeader();
 
-        AjaxRequest("GET", "./Views/components/header.html", LoadHeader);
+        // AjaxRequest("GET", "./Views/components/header.html", LoadHeader);
 
-        // LoadContent(router.ActiveLink, ActiveLinkCallBack(router.ActiveLink))
+        LoadContent();
         
-        // LoadFooter()
+        LoadFooter();
     }
 
     window.addEventListener("load", Start);
