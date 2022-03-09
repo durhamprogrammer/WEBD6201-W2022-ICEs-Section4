@@ -8,12 +8,12 @@ namespace core
         private m_emailAddress: string;
 
         // getters and setters
-        get FullName(): string
+        public get FullName(): string
         {
             return this.m_fullName;
         }
 
-        set FullName(full_name:string)
+        public set FullName(full_name:string)
         {
             this.m_fullName = full_name;
         }

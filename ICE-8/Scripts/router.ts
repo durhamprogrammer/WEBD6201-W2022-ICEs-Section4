@@ -12,7 +12,7 @@ namespace core
          *
          * @returns {string}
          */
-        get ActiveLink(): string
+         public get ActiveLink(): string
         {
             return this.m_activeLink;
         }
@@ -21,7 +21,7 @@ namespace core
          *
          * @param {string} link
          */
-        set ActiveLink(link: string)
+         public set ActiveLink(link: string)
         {
             this.m_activeLink = link;
         }

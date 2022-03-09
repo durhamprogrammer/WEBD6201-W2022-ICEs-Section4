@@ -9,42 +9,42 @@ namespace core
         private m_password: string
 
         // getters and setters
-        get DisplayName(): string
+        public get DisplayName(): string
         {
             return this.m_displayName;
         }
 
-        set DisplayName(display_name: string)
+        public set DisplayName(display_name: string)
         {
             this.m_displayName = display_name;
         }
 
-        get EmailAddress(): string
+        public get EmailAddress(): string
         {
             return this.m_emailAddress;
         }
 
-        set EmailAddress(email_address: string)
+        public set EmailAddress(email_address: string)
         {
             this.m_emailAddress = email_address;
         }
 
-        get Username(): string
+        public get Username(): string
         {
             return this.m_username;
         }
 
-        set Username(username: string)
+        public set Username(username: string)
         {
             this.m_username = username;
         }
 
-        get Password(): string
+        public get Password(): string
         {
             return this.m_password;
         }
 
-        set Password(password: string)
+        public set Password(password: string)
         {
             this.m_password = password;
         }
