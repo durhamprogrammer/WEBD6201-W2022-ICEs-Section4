@@ -4,6 +4,7 @@ namespace core
     {
         // private instance members
         private m_activeLink: string;
+        private m_linkData: string;
         private m_routingTable: string[];
 
         // public properties
@@ -26,6 +27,24 @@ namespace core
             this.m_activeLink = link;
         }
 
+        /**
+         *
+         * @returns {string}
+         */
+         public get LinkData(): string
+        {
+            return this.m_linkData;
+        }
+
+        /**
+         *
+         * @param {string} data
+         */
+         public set LinkData(data: string)
+        {
+            this.m_linkData = data;
+        }
+
         // constructor
 
         /**
@@ -35,6 +54,7 @@ namespace core
         constructor()
         {
             this.m_activeLink = "";
+            this.m_linkData = "";
             this.m_routingTable = []; // creates an empty string array
         }
 
