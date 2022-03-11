@@ -63,6 +63,7 @@
         let callback = ActiveLinkCallBack();
         $.get(`./Views/content/${page_name}.html`, function (html_data) {
             $("main").html(html_data);
+            CheckLogin();
             callback();
         });
     }

@@ -120,6 +120,7 @@
         $.get(`./Views/content/${page_name}.html`, function(html_data)
         {
             $("main").html(html_data); // data payload
+            CheckLogin();
             callback();
         });
     }
