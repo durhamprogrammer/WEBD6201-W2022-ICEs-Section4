@@ -2,32 +2,94 @@
 // AKA Anonymous Self-Executing Function
 (function()
 {
-    /**
-     * This method uses AJAX to open a connection to the url and returns data to the callback function
-     *
-     * @param {string} method
-     * @param {string} url
-     * @param {Function} callback
-     */
-    function AjaxRequest(method: string, url: string, callback: Function)
+    function AuthGuard(): void
     {
-        // step 1 - instantiate an XHR object
-        let XHR = new XMLHttpRequest();
-
-        // step 2 - create an event listener / handler for readystatechange event
-        XHR.addEventListener("readystatechange", () =>
+        let protected_routes: string[] = [
+            "contact-list"
+        ];
+    
+        if(protected_routes.indexOf(router.ActiveLink) > -1)
         {
-            if(XHR.readyState === 4 && XHR.status === 200)
+            // if user does not exist in session storage
+            if(!sessionStorage.getItem("user"))
             {
-               callback(XHR.responseText);
+                // if not...change the active link to the login page
+                router.ActiveLink = "login";
             }
+        }
+    }
+
+    function LoadLink(link: string, data: string = ""): void
+    {
+        router.ActiveLink = link;
+
+        AuthGuard();
+
+        router.LinkData = data;
+        history.pushState({}, "", router.ActiveLink);
+
+        // capitalize the active link and set the document title to it
+        document.title = router.ActiveLink.substring(0,1).toUpperCase() + router.ActiveLink.substring(1);
+
+        // remove all active Nav Links
+        $("ul>li>a").each(function(){
+            $(this).removeClass("active");
         });
 
-        // step 3 - open a connection to the server
-        XHR.open(method, url);
+        $(`li>a:contains(${document.title})`).addClass("active"); // add a class of 'active'
 
-        // step 4 - send the request to the server
-        XHR.send();
+        LoadContent();
+    }
+
+    function AddNavigationEvents(): void
+    {
+        let navLinks = $("ul>li>a"); // find all Navigation links
+
+        navLinks.off("click");
+        navLinks.off("mouseover");
+
+        // loop through each Navigation link and load appropriate content on click
+        navLinks.on("click", function()
+        {
+            LoadLink($(this).attr("data") as string);
+        });
+
+        // make Navigation links look like they are clickable
+        navLinks.on("mouseover", function()
+        {
+            $(this).css('cursor', 'pointer');
+        });
+    }
+
+    function AddLinkEvents(link: string): void
+    {
+        let linkQuery = $(`a.link[data=${link}]`);
+
+        // remove all link events
+        linkQuery.off("click");
+        linkQuery.off("mouseover");
+        linkQuery.off("mouseout");
+
+        // add css to adjust link aesthetic
+        linkQuery.css("text-decoration", "underline");
+        linkQuery.css("color", "blue");
+
+        // add link events
+        linkQuery.on("click", function()
+        {
+            LoadLink(`${link}`);
+        });
+
+        linkQuery.on("mouseover", function()
+        {
+            $(this).css('cursor', 'pointer');
+            $(this).css('font-weight', 'bold');
+        });
+
+        linkQuery.on("mouseout", function()
+        {
+            $(this).css('font-weight', 'normal');
+        });
     }
 
     /**
@@ -41,9 +103,7 @@
         {
             $("header").html(html_data); // data payload
 
-            document.title = router.ActiveLink.substring(0,1).toUpperCase() + router.ActiveLink.substring(1);
-
-            $(`li>a:contains(${document.title})`).addClass("active"); // add a class of 'active'
+            
             CheckLogin();
         });
     }
