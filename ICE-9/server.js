@@ -1,6 +1,12 @@
-const hello = require('./hello');
-const users = require('./users.data');
+import { sayHello, sayGoodbye } from "./hello.js";
+import { getData } from "./users.data.js";
 
-users.getData()
-.then((data) => { hello.sayHello(); console.log(data); hello.sayGoodbye(); })
-.catch((err) => { console.error("ERROR: User Data Failed to Load: " + err.message); });
+getData()
+  .then((data) => {
+    sayHello();
+    console.log(data);
+    sayGoodbye();
+  })
+  .catch((err) => {
+    console.error("ERROR: User Data Failed to Load: " + err.message);
+  });

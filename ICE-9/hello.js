@@ -1,17 +1,10 @@
 const helloMessage = "Hello, World!";
 const goodbyeMessage = "Good Bye!";
 
-function sayHello()
-{
+export function sayHello() {
     console.log(helloMessage);
 }
 
-function sayGoodbye()
-{
+export function sayGoodbye() {
     console.log(goodbyeMessage);
-}
-
-module.exports = {
-    sayHello,
-    sayGoodbye
 }
