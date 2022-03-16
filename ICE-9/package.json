@@ -1,11 +1,14 @@
 {
-  "name": "ICE-7",
+  "name": "ICE-9",
   "version": "1.0.0",
-  "description": "ICE 7 for WEBD6201 in the Winter 2022 Semester",
-  "main": "index.js",
+  "description": "ICE 9 for WEBD6201 in the Winter 2022 Semester",
+  "main": "server.js",
   "author": "Tom Tsiliopoulos",
   "license": "MIT",
   "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.4",
     "@popperjs/core": "^2.11.2",
