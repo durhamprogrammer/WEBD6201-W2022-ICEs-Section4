@@ -1,4 +1,35 @@
-import http from 'http';
+import express from 'express';
+import path from 'path'; // pre-bundled NodeJS module
+
+let router = express.Router();
+const app = express();
+
+const port = process.env.PORT || 3000;
+
+app.use(router); // attaches the router middleware function
+
+// application config
+app.set('views', path.join(__dirname, "./Views"));
+app.set('view engine', 'ejs'); // set the view engine to ejs
+
+// using express middleware (built-in) to add join static files to our path
+app.use(express.static(path.join(__dirname, "./Client")));
+app.use(express.static(path.join(__dirname, "./node_modules")));
+
+// express routing
+router.get("/", function(req, res, next)
+{
+  res.render("index", {title: "Hello, World!"});
+  next();
+});
+
+app.listen(port, function()
+{
+  console.log(`Server is listening on port: ${port}`);
+});
+
+
+/* import http from 'http';
 import fs from 'fs';
 import mime from 'mime-types'; // third-party module
 
@@ -37,4 +68,4 @@ const server = http.createServer(function(req, res)
 server.listen(port, function() 
 {
   console.log(`Server running on Port: ${port}`);
-});
+}); */
