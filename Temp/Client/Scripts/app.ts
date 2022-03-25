@@ -5,65 +5,25 @@
     function AuthGuard(): void
     {
         let protected_routes: string[] = [
-            "contact-list"
+            "/contact-list",
+            "/edit"
         ];
     
-        if(protected_routes.indexOf(router.ActiveLink) > -1)
+        if(protected_routes.indexOf(location.pathname) > -1)
         {
             // if user does not exist in session storage
             if(!sessionStorage.getItem("user"))
             {
                 // if not...change the active link to the login page
-                router.ActiveLink = "login";
+                location.href = "/login";
             }
         }
     }
 
-    function LoadLink(link: string, data: string = ""): void
-    {
-        router.ActiveLink = link;
-
-        AuthGuard();
-
-        router.LinkData = data;
-        history.pushState({}, "", router.ActiveLink);
-
-        // capitalize the active link and set the document title to it
-        document.title = router.ActiveLink.substring(0,1).toUpperCase() + router.ActiveLink.substring(1);
-
-        // remove all active Nav Links
-        $("ul>li>a").each(function(){
-            $(this).removeClass("active");
-        });
-
-        $(`li>a:contains(${document.title})`).addClass("active"); // add a class of 'active'
-
-        LoadContent();
-    }
-
-    function AddNavigationEvents(): void
-    {
-        let navLinks = $("ul>li>a"); // find all Navigation links
-
-        navLinks.off("click");
-        navLinks.off("mouseover");
-
-        // loop through each Navigation link and load appropriate content on click
-        navLinks.on("click", function()
-        {
-            LoadLink($(this).attr("data") as string);
-        });
-
-        // make Navigation links look like they are clickable
-        navLinks.on("mouseover", function()
-        {
-            $(this).css('cursor', 'pointer');
-        });
-    }
 
     function AddLinkEvents(link: string): void
     {
-        let linkQuery = $(`a.link[data=${link}]`);
+        let linkQuery = $(`a.link[href='/${link}']`);
 
         // remove all link events
         linkQuery.off("click");
@@ -77,7 +37,7 @@
         // add link events
         linkQuery.on("click", function()
         {
-            LoadLink(`${link}`);
+            location.href = `/${link}`;
         });
 
         linkQuery.on("mouseover", function()
@@ -91,54 +51,6 @@
             $(this).css('font-weight', 'normal');
         });
     }
-
-    /**
-     * This function loads the NavBar from the header file and injects it into the page
-     *
-     * @returns {void}
-     */
-    function LoadHeader(): void
-    {
-        console.log(location.pathname);
-
-        $.get("../../Views/components/header.html", function(html_data)
-        {
-            $("header").html(html_data); // data payload
-
-            AddNavigationEvents();
-
-            CheckLogin();
-        });
-    }
-
-    /**
-     *
-     * @returns {void}
-     */
-    function LoadContent(): void
-    {
-        let page_name = router.ActiveLink; // alias 
-        let callback = ActiveLinkCallBack(); // returns a reference to the appropriate function
-        $.get(`content/${page_name}.html`, function(html_data)
-        {
-            $("main").html(html_data); // data payload
-            CheckLogin();
-            callback();
-        });
-    }
-
-    /**
-     *
-     * @returns {void}
-     */
-    function LoadFooter(): void
-    {
-        $.get("components/footer.html", function(html_data)
-        {
-            $("footer").html(html_data); // data payload
-        });
-    }
-
 
     function DisplayAboutPage(): void
     {
@@ -161,7 +73,7 @@
 
         $("#AboutUsButton").on("click", function()
         {
-            LoadLink("about");
+            location.href = "/about";
         });
 
         $("main").append(`<p id="MainParagraph" class="mt-3">This is the Main Paragraph</p>`);
@@ -219,7 +131,7 @@
     /**
      * This method Validates the fullName, contactNumber and emailAddress fields of a form
      * 
-     * @returns {void}
+     * @s {void}
      */
     function ContactFormValidation(): void
     {
@@ -235,7 +147,7 @@
         $("a[data='contact-list']").off("click");
         $("a[data='contact-list']").on("click", function()
         {
-            LoadLink("contact-list");
+            location.href = "/contact-list";
         });
 
         ContactFormValidation();
@@ -304,18 +216,18 @@
                     localStorage.removeItem($(this).val() as string);
                 }
                 
-                LoadLink("contact-list");
+                location.href = "/contact-list";
             });
 
             $("button.edit").on("click", function() 
             {
-                LoadLink("edit", $(this).val() as string );
+                location.href = "/edit#" + $(this).val() as string;
             });
         }
 
         $("#addButton").on("click", () =>
             {
-                LoadLink("edit", "add");
+                location.href = "/edit#add";
         });
 
     }
@@ -326,7 +238,7 @@
 
         ContactFormValidation();
 
-        let page = router.LinkData;
+        let page = location.hash.substring(1);
 
         switch(page)
         {
@@ -348,12 +260,12 @@
                         AddContact(fullName, contactNumber, emailAddress);
 
                         // Refresh the contact-list page
-                        LoadLink("contact-list");
+                        location.href = "/contact-list";
                     });
 
                     $("#cancelButton").on("click", () =>
                     {
-                        LoadLink("contact-list");
+                        location.href = "/contact-list";
                     });
 
                 }
@@ -382,13 +294,13 @@
                         // replace the item in localStorage
                         localStorage.setItem(page, contact.serialize() as string);
 
-                        // return to the contact-list
-                        LoadLink("contact-list");
+                        //  to the contact-list
+                        location.href = "/contact-list";
                     });
 
                     $("#cancelButton").on("click", () =>
                     {
-                        LoadLink("contact-list");
+                        location.href = "/contact-list";
                     });
                     
                 }
@@ -417,7 +329,7 @@
                 );
 
                 // redirect back to login
-                LoadLink("login");
+                location.href = "/login";
             });
         }
     }
@@ -467,7 +379,7 @@
                     messageArea.removeAttr("class").hide();
 
                     // redirect the user to the secure area of our site - contact-list
-                    LoadLink("contact-list");
+                    location.href = "/contact-list";
                 }
                 else
                 {
@@ -477,26 +389,21 @@
                 }
             });
 
-           
-
             $("#cancelButtton").on("click", function()
             {
                 // clear the login form
                 document.forms[0].reset();
 
-                // return to  the home page
-                LoadLink("home");
+                //  to  the home page
+                location.href = "/home";
             });
         });
     }
-
-    
 
     function DisplayRegisterPage(): void
     {
         console.log("Register Page");
 
-        AddLinkEvents("login");
     }
 
     function Display404Page(): void
@@ -504,41 +411,50 @@
 
     }
 
-    /**
-     * This function returns the Callback function related to active link
-     *
-     * @returns {Function}
-     */
-    function ActiveLinkCallBack(): Function
-    {
-        switch(router.ActiveLink)
-        {
-            case "home": return DisplayHomePage;
-            case "about": return DisplayAboutPage;
-            case "products": return DisplayProductsPage;
-            case "services": return DisplayServicesPage;
-            case "contact": return DisplayContactPage;
-            case "contact-list": return DisplayContactListPage;
-            case "edit": return DisplayEditPage;
-            case "login": return DisplayLoginPage;
-            case "register": return DisplayRegisterPage;
-            case "404": return Display404Page;
-            default:
-                console.error("ERROR: callback does not exist: " + router.ActiveLink);
-                return new Function();
-        }
-    }
-
     // named function
     function Start(): void
     {
         console.log("App Started!!");
 
-        LoadHeader();
+        let page_id = $("body")[0].getAttribute("id");
 
-        LoadLink("home");
-        
-        LoadFooter();
+        CheckLogin();
+
+        switch(page_id)
+        {
+            case "home":  
+                DisplayHomePage();
+                break;
+            case "about":  
+                DisplayAboutPage();
+                break;
+            case "products":  
+                DisplayProductsPage();
+                break;
+            case "services":    
+                DisplayServicesPage();
+                break;
+            case "contact":  
+                DisplayContactPage();
+                break;
+            case "contact-list":  
+                AuthGuard();
+                DisplayContactListPage();
+                break;
+            case "edit":  
+                AuthGuard();
+                DisplayEditPage();
+                break;
+            case "login":  
+                DisplayLoginPage();
+                break;
+            case "register":  
+                DisplayRegisterPage();
+                break;
+            case "404":  
+                Display404Page();
+                break;
+        }
     }
 
     window.addEventListener("load", Start);
