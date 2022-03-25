@@ -1,71 +1,96 @@
-import express from 'express';
-import path from 'path'; // pre-bundled NodeJS module
+#!/usr/bin/env node
 
-let router = express.Router();
-const app = express();
+/**
+ * Module dependencies.
+ */
 
-const port = process.env.PORT || 3000;
+import app from './app';
+import debug from 'debug';
+debug('temp:server');
+import http from 'http';
+import { HttpError } from 'http-errors';
 
-app.use(router); // attaches the router middleware function
+/**
+ * Get port from environment and store in Express.
+ */
 
-// application config
-app.set('views', path.join(__dirname, "./Views"));
-app.set('view engine', 'ejs'); // set the view engine to ejs
+const port = normalizePort(process.env.PORT || '3000') as number;
+app.set('port', port);
 
-// using express middleware (built-in) to add join static files to our path
-app.use(express.static(path.join(__dirname, "./Client")));
-app.use(express.static(path.join(__dirname, "./node_modules")));
+/**
+ * Create HTTP server.
+ */
 
-// express routing
-router.get("/", function(req, res, next)
+const server = http.createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val: string)
 {
-  res.render("index", {title: "Hello, World!"});
-  next();
-});
+  const port = parseInt(val, 10);
 
-app.listen(port, function()
-{
-  console.log(`Server is listening on port: ${port}`);
-});
-
-
-/* import http from 'http';
-import fs from 'fs';
-import mime from 'mime-types'; // third-party module
-
-let lookup = mime.lookup; // alias for the lookup function
-
-const port = process.env.PORT || 3000;
-
-// Creates a Server Instance (Immutable)
-const server = http.createServer(function(req, res)
-{
-  let path = req.url as string;
-
-  if(path == "/")
+  if (isNaN(port)) 
   {
-    path = "/index.html";
+    // named pipe
+    return val;
   }
 
-  let mime_type = lookup(path.substring(1)) as string;
-
-  console.log(path);
-
-  fs.readFile(__dirname + path, function(err, data)
+  if (port >= 0) 
   {
-    if (err) {
-      res.writeHead(404);
-      res.end("ERROR: 404 - File Note Found! " + err.message);
-      return;
-    }
-    res.setHeader("X-Content-Type-Options", "nosniff"); // security
-    res.writeHead(200, { "Content-Type": mime_type });
-    res.end(data);
-  });
-});
+    // port number
+    return port;
+  }
 
-// add an event listener
-server.listen(port, function() 
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error: HttpError) :void
 {
-  console.log(`Server running on Port: ${port}`);
-}); */
+  if (error.syscall !== 'listen') 
+  {
+    throw error;
+  }
+
+  let bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() 
+{
+  let addr = server.address() as string;
+  let bind = 'pipe ' + addr;
+  debug('Listening on ' + bind);
+}

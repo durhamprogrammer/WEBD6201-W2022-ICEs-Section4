@@ -16,22 +16,25 @@
     <script src="Scripts/contact.js"></script>
     <script src="Scripts/user.js"></script>
 </head>
-<body>
+<body id="<%= page %>">
     <!-- Main Header -->
-    <header></header>
+    <header>
+        <%- include('./components/header') -%>
+    </header>
 
     <!-- Main Content -->
     <main class="container">
-
-        <h1><%= title %></h1>
-
+       <%- include('./content/' + page) -%>
     </main>
 
     <!-- Main Footer -->
-    <footer></footer>
+    <footer>
+        <%- include('./components/footer') -%>
+    </footer>
     
     <!-- Scripting Section - Bottom -->
     <script src="jquery/dist/jquery.min.js"></script>
     <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="Scripts/app.js"></script>
 </body>
 </html>
