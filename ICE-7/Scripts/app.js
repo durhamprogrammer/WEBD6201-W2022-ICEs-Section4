@@ -40,7 +40,9 @@
         {
             $("header").html(html_data); // data payload
 
-            //TODO: this needs to be fixed
+            // capitalize the Active Link and then set the document title to the new String
+            document.title = router.ActiveLink.substring(0, 1).toUpperCase() + router.ActiveLink.substring(1);
+
             $(`li>a:contains(${document.title})`).addClass("active"); // add a class of 'active'
             CheckLogin();
         });
