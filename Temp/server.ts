@@ -4,22 +4,24 @@
  * Module dependencies.
  */
 
-var app = require('../app');
-var debug = require('debug')('temp:server');
-var http = require('http');
+import app from './app';
+import debug from 'debug';
+debug('temp:server');
+import http from 'http';
+import { HttpError } from 'http-errors';
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || '3000') as number;
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+const server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -33,15 +35,18 @@ server.on('listening', onListening);
  * Normalize a port into a number, string, or false.
  */
 
-function normalizePort(val) {
-  var port = parseInt(val, 10);
+function normalizePort(val: string)
+{
+  const port = parseInt(val, 10);
 
-  if (isNaN(port)) {
+  if (isNaN(port)) 
+  {
     // named pipe
     return val;
   }
 
-  if (port >= 0) {
+  if (port >= 0) 
+  {
     // port number
     return port;
   }
@@ -53,12 +58,14 @@ function normalizePort(val) {
  * Event listener for HTTP server "error" event.
  */
 
-function onError(error) {
-  if (error.syscall !== 'listen') {
+function onError(error: HttpError) :void
+{
+  if (error.syscall !== 'listen') 
+  {
     throw error;
   }
 
-  var bind = typeof port === 'string'
+  let bind = typeof port === 'string'
     ? 'Pipe ' + port
     : 'Port ' + port;
 
@@ -81,10 +88,9 @@ function onError(error) {
  * Event listener for HTTP server "listening" event.
  */
 
-function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
+function onListening() 
+{
+  let addr = server.address() as string;
+  let bind = 'pipe ' + addr;
   debug('Listening on ' + bind);
 }
