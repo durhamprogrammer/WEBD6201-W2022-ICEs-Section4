@@ -1,6 +1,8 @@
 import express from 'express';
 const router = express.Router();
 
+import Contact from '../Models/contact';
+
 /* GET home page. */
 router.get('/', function(req, res, next) 
 {
@@ -54,6 +56,18 @@ router.get('/register', function(req, res, next)
 /* GET contact-list page. */
 router.get('/contact-list', function(req, res, next) 
 {
+  // R - Read
+  Contact.find(function(err, contacts)
+  {
+    if(err)
+    {
+      console.error("Error Encountered: " + err.message);
+      res.end();
+    }
+
+    console.log(contacts);
+  });
+
   res.render('index', { title: 'Contact List', page: 'contact-list', displayName: '' });
 });
 
