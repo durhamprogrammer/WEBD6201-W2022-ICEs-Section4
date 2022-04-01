@@ -175,7 +175,7 @@
     {
         console.log("Contact-List Page");
 
-        if(localStorage.length > 0) // check if localStorage has something in it 
+       /*  if(localStorage.length > 0) // check if localStorage has something in it 
         {
             let contactList = document.getElementById("contactList") as HTMLElement;
 
@@ -228,7 +228,7 @@
         $("#addButton").on("click", () =>
             {
                 location.href = "/edit#add";
-        });
+        }); */
 
     }
 
@@ -438,11 +438,9 @@
                 DisplayContactPage();
                 break;
             case "contact-list":  
-                AuthGuard();
                 DisplayContactListPage();
                 break;
             case "edit":  
-                AuthGuard();
                 DisplayEditPage();
                 break;
             case "login":  

@@ -31,14 +31,13 @@ router.get('/register', function (req, res, next) {
     res.render('index', { title: 'Register', page: 'register', displayName: '' });
 });
 router.get('/contact-list', function (req, res, next) {
-    contact_1.default.find(function (err, contacts) {
+    contact_1.default.find(function (err, contactList) {
         if (err) {
             console.error("Error Encountered: " + err.message);
             res.end();
         }
-        console.log(contacts);
+        res.render('index', { title: 'Contact List', page: 'contact-list', contacts: contactList, displayName: '' });
     });
-    res.render('index', { title: 'Contact List', page: 'contact-list', displayName: '' });
 });
 router.get('/edit', function (req, res, next) {
     res.render('index', { title: 'Edit Contact', page: 'edit', displayName: '' });

@@ -57,7 +57,7 @@ router.get('/register', function(req, res, next)
 router.get('/contact-list', function(req, res, next) 
 {
   // R - Read
-  Contact.find(function(err, contacts)
+  Contact.find(function(err, contactList)
   {
     if(err)
     {
@@ -65,10 +65,10 @@ router.get('/contact-list', function(req, res, next)
       res.end();
     }
 
-    console.log(contacts);
+    res.render('index', { title: 'Contact List', page: 'contact-list', contacts: contactList, displayName: '' });
   });
 
-  res.render('index', { title: 'Contact List', page: 'contact-list', displayName: '' });
+ 
 });
 
 /* GET contact-list page. */
