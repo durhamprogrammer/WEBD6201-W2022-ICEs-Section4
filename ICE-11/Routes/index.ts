@@ -77,6 +77,30 @@ router.get('/add', function(req, res, next)
   res.render('index', { title: 'Add', page: 'edit', contact: '', displayName: '' });
 });
 
+/* Prrocess the Add request */
+router.post('/add', function(req, res, next) 
+{
+  // instantiate a new contact to add
+  let newContact = new Contact
+  ({
+    "FullName": req.body.fullName,
+    "ContactNumber": req.body.contactNumber,
+    "EmailAddress": req.body.emailAddress
+  });
+
+  // db.conttacts.insert
+  Contact.create(newContact, function(err: ErrorCallback)
+  {
+    if(err)
+    {
+      console.error(err);
+      res.end(err);
+    }
+    // newContact has been added to the db -> now go back to the contact-list
+    res.redirect('/contact-list');
+  });
+});
+
 /* Display the Edit page with data from DB */
 router.get('/edit/:id', function(req, res, next) 
 {
