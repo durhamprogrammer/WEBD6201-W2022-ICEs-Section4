@@ -1,7 +1,7 @@
 {
-  "name": "ICE-11",
+  "name": "ICE-12",
   "version": "1.0.0",
-  "description": "ICE 11 for WEBD6201 in the Winter 2022 Semester",
+  "description": "ICE 12 for WEBD6201 in the Winter 2022 Semester",
   "main": "server.js",
   "author": "Tom Tsiliopoulos",
   "license": "MIT",

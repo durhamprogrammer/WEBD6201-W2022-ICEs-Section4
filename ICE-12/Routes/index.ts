@@ -88,8 +88,8 @@ router.post('/add', function(req, res, next)
     "EmailAddress": req.body.emailAddress
   });
 
-  // db.conttacts.insert
-  Contact.create(newContact, function(err: ErrorCallback)
+  // db.contacts.insert
+  Contact.create(newContact, function(err)
   {
     if(err)
     {

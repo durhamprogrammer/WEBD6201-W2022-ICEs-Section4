@@ -1,9 +1,22 @@
+// import 3rd party modules to support the express server
 import createError from 'http-errors';
 import express, { NextFunction } from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
+
+// module for connecting to MongoDB
 import mongoose from 'mongoose';
+
+// modules for authentication
+import session from 'express-session';
+import passport from 'passport';
+import passportLocal from 'passport-local';
+
+// authentication objects
+let localStrategy = passportLocal.Strategy; // alias
+
+// import a user Model
 
 import indexRouter from '../Routes/index';
 import usersRouter from '../Routes/users';
@@ -12,7 +25,7 @@ const app = express();
 
 // db configuration
 import * as DBConfig from './db';
-mongoose.connect(DBConfig.RemoteURI);
+mongoose.connect(DBConfig.LocalURI);
 
 const db = mongoose.connection; // alias for mongoose.connection
 db.on("error", function()
