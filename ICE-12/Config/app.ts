@@ -9,15 +9,20 @@ import logger from 'morgan';
 import mongoose from 'mongoose';
 
 // modules for authentication
-import session from 'express-session';
-import passport from 'passport';
-import passportLocal from 'passport-local';
+import session from 'express-session'; // cookie-based authentication
+import passport from 'passport'; // authentication middleware
+import passportLocal from 'passport-local'; // authentication strategy (username / password)
+import flash from 'connect-flash'; // auth messaging and error management
 
 // authentication objects
 let localStrategy = passportLocal.Strategy; // alias
 
 // import a user Model
+import User from '../Models/user';
 
+// App configuration
+
+// Import routers
 import indexRouter from '../Routes/index';
 import usersRouter from '../Routes/users';
 
@@ -41,12 +46,34 @@ db.once("open", function()
 app.set('views', path.join(__dirname, '../Views'));
 app.set('view engine', 'ejs');
 
+// add middleware functions
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../Client')));
 app.use(express.static(path.join(__dirname, '../node_modules')));
+
+// setup express session
+app.use(session({
+  secret: DBConfig.SessionSecret,
+  saveUninitialized: false,
+  resave: false
+}));
+
+// initialize flash middleware
+app.use(flash());
+
+// initialize passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+// implement an Auth Strategy
+passport.use(User.createStrategy());
+
+// serialize and deserialize user data
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
