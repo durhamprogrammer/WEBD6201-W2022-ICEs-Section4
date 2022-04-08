@@ -1,7 +1,9 @@
 import express from 'express';
 const router = express.Router();
+import passport from 'passport';
 
 import Contact from '../Models/contact';
+import User from '../Models/user';
 
 /* GET home page. */
 router.get('/', function(req, res, next) 
@@ -39,20 +41,106 @@ router.get('/contact', function(req, res, next)
   res.render('index', { title: 'Contact Us', page: 'contact', displayName: '' });
 });
 
-/* GET login page. */
+/*************************************** AUTHENTICATION ROUTES************************************************/
+/* GET - Display login page. */
 router.get('/login', function(req, res, next) 
 {
-  res.render('index', { title: 'Login', page: 'login', displayName: '' });
+  if(!req.user)
+  {
+    return res.render('index', 
+      { title: 'Login', page: 'login', messages: req.flash('loginMessage'), displayName: '' });
+  }
+  return res.redirect('/contact-list');
 });
 
-/* GET register page. */
+/* Process the login request */
+router.post('/login', function(req, res, next) 
+{
+  passport.authenticate('local', function(err, user, info)
+  {
+    // are there serer errors?
+    if(err)
+    {
+      console.error(err);
+      res.end(err);
+    }
+    
+    // are there login errors?
+    if(!user)
+    {
+      req.flash('loginMessage', 'Authentication Error');
+      return res.redirect('/login');
+    }
+
+    req.logIn(user, function(err)
+    {
+      // are there db errors?
+      if(err)
+      {
+        console.error(err);
+        res.end(err);
+      }
+
+      return res.redirect('/contact-list')
+    });
+  })(req, res, next);
+});
+
+/* GET - Display register page. */
 router.get('/register', function(req, res, next) 
 {
-  res.render('index', { title: 'Register', page: 'register', displayName: '' });
+  if(!req.user)
+  {
+  return res.render('index', 
+    { title: 'Register', page: 'register', messages: req.flash('registerMessage'), displayName: '' });
+  }
+  return res.redirect('/contact-list');
+});
+
+/* Process the register request */
+router.post('/register', function(req, res, next) 
+{
+  // instantiate a new user object
+  let newUser = new User
+  ({
+    username: req.body.username,
+    EmailAddress: req.body.emailAddress,
+    DisplayName: req.body.firstName + " " + req.body.lastName
+  });
+
+  User.register(newUser, req.body.password, function(err)
+  {
+    if(err)
+    {
+      if(err.name == "UserExistsError")
+      {
+        console.error('ERROR: Inserting User');
+        req.flash('registerMessage', 'Registration Error');
+        console.error('ERROR: User Already Exists');
+      }
+      req.flash('registerMessage', 'Server Failure');
+      console.error(err.name);
+      return res.redirect('/register');
+    }
+    
+    // automatically login the user
+    return passport.authenticate('local')(req, res, ()=>
+    {
+      return res.redirect('/contact-list');
+    });
+  });
+});
+
+/* process logout request */
+router.get('/logout', function(req, res, next) 
+{
+  req.logOut();
+
+  res.redirect('/login');
 });
 
 /* Temporary Routes - Contact-List related pages */
-
+/*************************************** CONTACT-LIST ROUTES************************************************/
 /* GET contact-list page. */
 router.get('/contact-list', function(req, res, next) 
 {
