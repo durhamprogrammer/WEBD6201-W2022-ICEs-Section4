@@ -125,9 +125,12 @@ app.use(function(err: createError.HttpError, req: express.Request, res: express.
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
+  let message = err.message;
+  let error = err;
+
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error', {message: message, error: error, title: '', page: '', displayName: ''});
 });
 
 export default app;

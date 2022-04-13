@@ -98,8 +98,10 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
+    let message = err.message;
+    let error = err;
     res.status(err.status || 500);
-    res.render('error');
+    res.render('error', { message: message, error: error, title: '', page: '', displayName: '' });
 });
 exports.default = app;
 //# sourceMappingURL=app.js.map
