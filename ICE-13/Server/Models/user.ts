@@ -32,7 +32,7 @@ declare global
     {
         _id: String,
         DisplayName: String,
-        Username: String,
+        username: String,
         EmailAddress: String,
     }
 }
