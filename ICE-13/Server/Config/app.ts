@@ -25,6 +25,7 @@ import User from '../Models/user';
 // Import routers
 import indexRouter from '../Routes/index';
 import authRouter from '../Routes/auth';
+import contactListRouter from '../Routes/contact-list';
 
 const app = express();
 
@@ -77,6 +78,7 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use('/', indexRouter);
 app.use('/', authRouter);
+app.use('/', contactListRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) 
