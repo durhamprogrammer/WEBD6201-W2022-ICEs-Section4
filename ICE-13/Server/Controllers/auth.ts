@@ -3,7 +3,7 @@ import express, {Request, Response, NextFunction } from 'express';
 import passport from 'passport';
 
 import User from '../Models/user';
-import { UserDisplayName } from '../Util/index';
+import { GenerateToken, UserDisplayName } from '../Util/index';
 
 // Display Pages
 
@@ -55,8 +55,13 @@ export function ProcessLoginPage(req: Request, res: Response, next: NextFunction
           console.error(err);
           res.end(err);
         }
+
+        const authToken = GenerateToken(user);
+        // return res.json({success: true, msg: 'User Logged In Successfully!', user: user, token: authToken});
+
+        //console.log(authToken);
   
-        return res.redirect('/contact-list')
+        return res.redirect('/contact-list');
       });
     })(req, res, next);
 }
