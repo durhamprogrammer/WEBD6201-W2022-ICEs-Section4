@@ -1,12 +1,13 @@
 import express from 'express';
 const router = express.Router();
+import passport from 'passport';
 
 // controller instance
 import { DisplayAddPage, DisplayContactListPage, DisplayEditPage, ProcessAddPage, ProcessDeletePage, ProcessEditPage } from '../Controllers/contact-list';
 
 /*************************************** CONTACT-LIST ROUTES************************************************/
 /* GET contact-list page. */
-router.get('/contact-list',  DisplayContactListPage);
+router.get('/contact-list', DisplayContactListPage);
 
 /* Display the Add page. */
 router.get('/add',  DisplayAddPage);
