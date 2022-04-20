@@ -86,7 +86,7 @@ export function ProcessDeletePage(req: Request, res: Response, next: NextFunctio
 {
     let id = req.params.id;
 
-    Contact.remove({_id: id}, (err) => {
+    Contact.deleteOne({_id: id}, (err) => {
         if (err) {
           console.error(err);
           res.end(err);
