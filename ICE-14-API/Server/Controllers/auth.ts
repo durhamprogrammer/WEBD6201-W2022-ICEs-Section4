@@ -3,29 +3,7 @@ import express, {Request, Response, NextFunction } from 'express';
 import passport from 'passport';
 
 import User from '../Models/user';
-import { GenerateToken, UserDisplayName } from '../Util/index';
-
-// Display Pages
-
-export function DisplayLoginPage(req: Request, res: Response, next: NextFunction): void
-{
-    if(!req.user)
-    {
-      return res.render('index', 
-        { title: 'Login', page: 'login', messages: req.flash('loginMessage'), displayName: UserDisplayName(req) });
-    }
-    return res.redirect('/contact-list');
-}
-
-export function DisplayRegisterPage(req: Request, res: Response, next: NextFunction): void
-{
-    if(!req.user)
-  {
-  return res.render('index', 
-    { title: 'Register', page: 'register', messages: req.flash('registerMessage'), displayName: UserDisplayName(req) });
-  }
-  return res.redirect('/contact-list');
-}
+import { GenerateToken } from '../Util/index';
 
 // Process Pages
 
@@ -43,8 +21,7 @@ export function ProcessLoginPage(req: Request, res: Response, next: NextFunction
       // are there login errors?
       if(!user)
       {
-        req.flash('loginMessage', 'Authentication Error');
-        return res.redirect('/login');
+        return res.json({success: false, msg: 'ERROR: Authentication Failure'});
       }
   
       req.logIn(user, function(err)
@@ -57,11 +34,12 @@ export function ProcessLoginPage(req: Request, res: Response, next: NextFunction
         }
 
         const authToken = GenerateToken(user);
-        // return res.json({success: true, msg: 'User Logged In Successfully!', user: user, token: authToken});
-
-        //console.log(authToken);
-  
-        return res.redirect('/contact-list');
+        return res.json({success: true, msg: 'User Logged In Successfully!', user: {
+          id: user._id,
+          DisplayName: user.DisplayName,
+          username: user.username,
+          EmailAddress: user.EmailAddress
+        }, token: authToken});
       });
     })(req, res, next);
 }
@@ -83,19 +61,18 @@ export function ProcessRegisterPage(req: Request, res: Response, next: NextFunct
       if(err.name == "UserExistsError")
       {
         console.error('ERROR: Inserting User');
-        req.flash('registerMessage', 'Registration Error');
         console.error('ERROR: User Already Exists');
       }
-      req.flash('registerMessage', 'Server Failure');
       console.error(err.name);
-      return res.redirect('/register');
+      return res.json({success: false, msg: 'ERROR: Registration Failure'});
     }
     
+    return res.json({success: true, msg: 'User Registered Successfully!'});
     // automatically login the user
-    return passport.authenticate('local')(req, res, ()=>
+    /* return passport.authenticate('local')(req, res, ()=>
     {
       return res.redirect('/contact-list');
-    });
+    }); */
   });
 }
 
@@ -103,5 +80,5 @@ export function ProcessLogoutPage(req: Request, res: Response, next: NextFunctio
 {
     req.logOut();
 
-    res.redirect('/login');
+    res.json({success: true, msg: 'User Logged Out Successfully!'});
 }
