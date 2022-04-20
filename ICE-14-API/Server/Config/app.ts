@@ -31,7 +31,6 @@ import User from '../Models/user';
 // App configuration
 
 // Import routers
-import indexRouter from '../Routes/index';
 import authRouter from '../Routes/auth';
 import contactListRouter from '../Routes/contact-list';
 
@@ -108,9 +107,8 @@ let strategy = new JWTStrategy(jwtOptions, function(jwt_payload, done)
 
 passport.use(strategy);
 
-app.use('/', indexRouter);
-app.use('/', authRouter);
-app.use('/', contactListRouter);
+app.use('/api', authRouter);
+app.use('/api', contactListRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) 
