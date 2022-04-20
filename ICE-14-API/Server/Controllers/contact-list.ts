@@ -16,14 +16,13 @@ export function DisplayContactListPage(req: Request, res: Response, next: NextFu
      res.end();
    }
 
-   res.render('index', 
-     { title: 'Contact List', page: 'contact-list', contacts: contactList, displayName: UserDisplayName(req) });
+   res.json({success: true, msg: 'Contact List Displayed Successfully', contacts: contactList, user: req.user});
  });
 }
 
 export function DisplayAddPage(req: Request, res: Response, next: NextFunction): void
 {
-    res.render('index', { title: 'Add', page: 'edit', contact: '', displayName: UserDisplayName(req) });
+  res.json({success: true, msg: 'Add Page Displayed Successfully', user: req.user});
 }
 
 export function DisplayEditPage(req: Request, res: Response, next: NextFunction): void
@@ -40,7 +39,7 @@ export function DisplayEditPage(req: Request, res: Response, next: NextFunction)
       }
   
       // show the edit view with the data
-      res.render('index', { title: 'Edit', page: 'edit', contact: contactToEdit, displayName: UserDisplayName(req) });
+      res.json({success: true, msg: 'Edit Page Displayed Successfully',contact: contactToEdit, user: req.user});
     });  
 }
 
@@ -63,8 +62,7 @@ export function ProcessAddPage(req: Request, res: Response, next: NextFunction):
         console.error(err);
         res.end(err);
     }
-    // newContact has been added to the db -> now go back to the contact-list
-    res.redirect('/contact-list');
+    res.json({success: true, msg: 'Add Page Processed Successfully',contact: newContact, user: req.user});
     });
 }
 
@@ -80,8 +78,7 @@ export function ProcessEditPage(req: Request, res: Response, next: NextFunction)
       "ContactNumber": req.body.contactNumber,
       "EmailAddress": req.body.emailAddress
     });
-  
-    // db.contacts.update({"_id":id}, update info...)
+
     Contact.updateOne({_id:id}, updatedContact, function(err: ErrorCallback)
     {
       if(err)
@@ -89,9 +86,8 @@ export function ProcessEditPage(req: Request, res: Response, next: NextFunction)
         console.error(err);
         res.end(err);
       }
-  
-      // the edit was successful -> go back to the contact-list
-      res.redirect('/contact-list');
+
+      res.json({success: true, msg: 'Edit Page Processed Successfully',contact: updatedContact, user: req.user});
     });  
 }
 
@@ -99,7 +95,6 @@ export function ProcessDeletePage(req: Request, res: Response, next: NextFunctio
 {
     let id = req.params.id;
 
-    // db.contacts.remove({"_id":id})
     Contact.remove({_id: id}, function(err)
     {
       if(err)
@@ -107,8 +102,7 @@ export function ProcessDeletePage(req: Request, res: Response, next: NextFunctio
         console.error(err);
         res.end(err);
       }
-  
-      // delete was successful -> go back to the contact-list
-      res.redirect('/contact-list');
+
+      res.json({success: true, msg: 'Delete Page Processed Successfully',contactID: id, user: req.user});
     });  
 }
